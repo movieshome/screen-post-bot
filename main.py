@@ -43,6 +43,7 @@ def get_access_token():
 def post_to_blogger(movie, short_link, category, remark):
     token = get_access_token()
     if not token:
+        print("❌ Failed to get Blogger access token.", flush=True)
         return None
 
     content = f'''
@@ -64,17 +65,22 @@ def post_to_blogger(movie, short_link, category, remark):
         "content": content,
         "labels": [category]
     }
+
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
-    res = requests.post(f"https://www.googleapis.com/blogger/v3/blogs/{BLOG_ID}/posts/", headers=headers, json=payload)
-    if res.ok:
-    return res.json().get("url")
-    else:
-    print("❌ Blogger API Error:", res.text)  # ✅ This logs full error to Render logs
-    return None
 
+    res = requests.post(f"https://www.googleapis.com/blogger/v3/blogs/{BLOG_ID}/posts/", headers=headers, json=payload)
+
+    if res.ok:
+        return res.json().get("url")
+    else:
+        print("❌ Blogger API ERROR — Full Response Below:", flush=True)
+        print("Status Code:", res.status_code, flush=True)
+        print("Response Body:", res.text, flush=True)
+        return None
+        
 @app.route(f"/{TELEGRAM_TOKEN}", methods=["POST"])
 def webhook():
     data = request.get_json()
