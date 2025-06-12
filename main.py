@@ -69,7 +69,11 @@ def post_to_blogger(movie, short_link, category, remark):
         "Content-Type": "application/json"
     }
     res = requests.post(f"https://www.googleapis.com/blogger/v3/blogs/{BLOG_ID}/posts/", headers=headers, json=payload)
-    return res.json().get("url") if res.ok else None
+    if res.ok:
+    return res.json().get("url")
+else:
+    print("❌ Blogger API Error:", res.text)  # ✅ This will log the full error to Render
+    return None
 
 @app.route(f"/{TELEGRAM_TOKEN}", methods=["POST"])
 def webhook():
