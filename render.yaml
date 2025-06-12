@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: telegram-blogger-bot
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn main:app"
+    envVars:
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: OMDB_API_KEY
+        sync: false
+      - key: SHRINK_API_TOKEN
+        sync: false
+      - key: BLOGGER_CLIENT_ID
+        sync: false
+      - key: BLOGGER_CLIENT_SECRET
+        sync: false
+      - key: BLOGGER_REFRESH_TOKEN
+        sync: false
+      - key: BLOG_ID
+        sync: false
+      - key: ADMIN_ID
+        sync: false
