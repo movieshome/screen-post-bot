@@ -71,8 +71,8 @@ def post_to_blogger(movie, short_link, category, remark):
     res = requests.post(f"https://www.googleapis.com/blogger/v3/blogs/{BLOG_ID}/posts/", headers=headers, json=payload)
     if res.ok:
     return res.json().get("url")
-else:
-    print("❌ Blogger API Error:", res.text)  # ✅ This will log the full error to Render
+    else:
+    print("❌ Blogger API Error:", res.text)  # ✅ This logs full error to Render logs
     return None
 
 @app.route(f"/{TELEGRAM_TOKEN}", methods=["POST"])
